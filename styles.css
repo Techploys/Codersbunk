@@ -105,6 +105,7 @@ body {
 .hero {
     padding: 120px 0 80px;
     text-align: center;
+    transition: transform 0.4s ease-out;
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
 }
 
@@ -888,4 +889,19 @@ body {
     .tools-grid {
         grid-template-columns: 1fr;
     }
+}
+/* Show nav-menu when toggle is active */
+.nav-menu.active {
+    display: flex !important;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+    gap: 1rem;
+    z-index: 999;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }

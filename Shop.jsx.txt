@@ -1,0 +1,150 @@
+import React, { useState } from "react";
+
+// Example product data
+const initialProducts = [
+  {
+    id: 1,
+    name: "React Portfolio Template",
+    description: "A professional portfolio template built with React.",
+    price: 19.99,
+    fileUrl: "#",
+    imageUrl: "https://via.placeholder.com/150"
+  },
+  {
+    id: 2,
+    name: "E-commerce Starter Kit",
+    description: "Starter kit for e-commerce apps (frontend + backend).",
+    price: 29.99,
+    fileUrl: "#",
+    imageUrl: "https://via.placeholder.com/150"
+  }
+];
+
+export default function Shop() {
+  const [products, setProducts] = useState(initialProducts);
+  const [showModal, setShowModal] = useState(false);
+  const [newProduct, setNewProduct] = useState({
+    name: "",
+    description: "",
+    price: "",
+    fileUrl: "",
+    imageUrl: ""
+  });
+
+  const handleInputChange = (e) => {
+    setNewProduct({
+      ...newProduct,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleAddProduct = (e) => {
+    e.preventDefault();
+    setProducts([
+      ...products,
+      {
+        ...newProduct,
+        id: products.length + 1,
+        price: parseFloat(newProduct.price)
+      }
+    ]);
+    setNewProduct({
+      name: "",
+      description: "",
+      price: "",
+      fileUrl: "",
+      imageUrl: ""
+    });
+    setShowModal(false);
+  };
+
+  const handleBuy = (product) => {
+    alert(`Implement payment and delivery for: ${product.name}`);
+    // Here you would integrate with a payment provider, then on success, deliver the fileUrl
+  };
+
+  return (
+    <div style={{ maxWidth: 800, margin: "auto", padding: 24 }}>
+      <h1>Digital Shop</h1>
+      <button onClick={() => setShowModal(true)} style={{ marginBottom: 20 }}>
+        + Add Product
+      </button>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 24 }}>
+        {products.map((product) => (
+          <div key={product.id} style={{
+            border: "1px solid #ddd",
+            borderRadius: 8,
+            padding: 16,
+            width: 250
+          }}>
+            <img src={product.imageUrl} alt={product.name} style={{ width: "100%", borderRadius: 4, marginBottom: 12 }} />
+            <h3>{product.name}</h3>
+            <p>{product.description}</p>
+            <strong>${product.price.toFixed(2)}</strong>
+            <br />
+            <button onClick={() => handleBuy(product)} style={{ marginTop: 10 }}>
+              Buy Now
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {showModal && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
+          background: "rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center"
+        }}>
+          <form onSubmit={handleAddProduct} style={{
+            background: "#fff", padding: 24, borderRadius: 8, minWidth: 320
+          }}>
+            <h2>Add New Product</h2>
+            <input
+              name="name"
+              placeholder="Product Name"
+              value={newProduct.name}
+              onChange={handleInputChange}
+              required
+              style={{ width: "100%", marginBottom: 10 }}
+            />
+            <textarea
+              name="description"
+              placeholder="Description"
+              value={newProduct.description}
+              onChange={handleInputChange}
+              required
+              style={{ width: "100%", marginBottom: 10 }}
+            />
+            <input
+              name="price"
+              type="number"
+              placeholder="Price (USD)"
+              value={newProduct.price}
+              onChange={handleInputChange}
+              required
+              style={{ width: "100%", marginBottom: 10 }}
+            />
+            <input
+              name="fileUrl"
+              placeholder="Download Link (after purchase)"
+              value={newProduct.fileUrl}
+              onChange={handleInputChange}
+              required
+              style={{ width: "100%", marginBottom: 10 }}
+            />
+            <input
+              name="imageUrl"
+              placeholder="Image URL"
+              value={newProduct.imageUrl}
+              onChange={handleInputChange}
+              style={{ width: "100%", marginBottom: 10 }}
+            />
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <button type="button" onClick={() => setShowModal(false)}>Cancel</button>
+              <button type="submit">Add Product</button>
+            </div>
+          </form>
+        </div>
+      )}
+    </div>
+  );
+}
